@@ -45,7 +45,9 @@ const updateJobById = async (req, res) => {
 };
 
 const deleteJobById = async (req, res) => {
-  res.status(200).json({ message: `deleting ${req.params.id} job` });
+  const { id } = req.params;
+  await Job.findByIdAndDelete(id);
+  res.redirect("/jobs");
 };
 
 module.exports = {

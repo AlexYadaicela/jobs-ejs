@@ -21,8 +21,9 @@
                 <button type="button">edit</button>
               </a>
               </td>
-            <td> <a href="/jobs/delete<%= job.id %>">
-              <button type="button">delete</button></td>
+            <td> 
+              <%- include("deleteJob.ejs", {job})%>
+            </td>
             </a>
           </tr>
         <% }) %>

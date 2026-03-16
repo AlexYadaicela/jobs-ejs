@@ -14,6 +14,6 @@ router.route("/").get(getAllJobs).post(addNewJob);
 router.route("/new").get(getFormToAddJob);
 router.route("/edit/:id").get(getJobById);
 router.route("/update/:id").post(updateJobById);
-router.route("/delete/:id").delete(deleteJobById);
+router.route("/delete/:id").post(deleteJobById);
 
 module.exports = router;
