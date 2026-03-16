@@ -50,6 +50,11 @@ app.use(require("./middleware/storeLocals"));
 app.get("/", (req, res) => {
   res.render("index");
 });
+
+// app.get("/jobs", (req, res) => {
+//   res.render("jobs");
+// });
+
 app.use("/sessions", require("./routes/sessionRoutes"));
 
 // secret word handling

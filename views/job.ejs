@@ -1,0 +1,24 @@
+<form action="/jobs" method="POST">
+  <div>
+    <label for="company">enter company</label>
+    <input name="company" />
+  </div>
+  <div>
+    <label for="position">enter position</label>
+    <input name="position" />
+  </div>
+  <div>
+    <label for="status">enter status</label>
+    <select name="status">
+      <option value="interview">interview</option>
+      <option value="declined">declined</option>
+      <option value="pending">pending</option>
+    </select>
+  </div>
+  <div>
+    <button>Add</button>
+    <a href="/jobs">
+      <button type="button">Cancel</button>
+    </a>
+  </div>
+</form>

@@ -1,12 +1,24 @@
+const Job = require("../models/Job.js");
+
 const getAllJobs = async (req, res) => {
-  res.status(200).json({ message: "getting all Jobs" });
+  const jobs = await Job.find({ createdBy: req.user.id });
+  console.log(jobs);
+  res.render("jobs", { jobs });
+  //   res.status(200).json({ message: "getting all Jobs" });
 };
 
 const addNewJob = async (req, res) => {
-  res.status(200).json({ message: "Adding new Job" });
+  const { company, position, status } = req.body;
+  await Job.create({
+    company,
+    position,
+    status,
+    createdBy: req.user.id,
+  });
+  res.redirect("/jobs");
 };
-const createNewJob = async (req, res) => {
-  res.status(200).json({ message: "Creating new job" });
+const getFormToAddJob = async (req, res) => {
+  res.render("job", { job: null });
 };
 const getJobById = async (req, res) => {
   res.status(200).json({ message: `getting ${req.params.id} job` });
@@ -22,7 +34,7 @@ const deleteJobById = async (req, res) => {
 module.exports = {
   getAllJobs,
   addNewJob,
-  createNewJob,
+  getFormToAddJob,
   getJobById,
   updateJobById,
   deleteJobById,
