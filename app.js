@@ -1,5 +1,6 @@
 const express = require("express");
 require("express-async-errors");
+const jobsRoute = require("./routes/jobs");
 
 const app = express();
 
@@ -56,6 +57,7 @@ app.use("/sessions", require("./routes/sessionRoutes"));
 const auth = require("./middleware/auth");
 const secretWordRouter = require("./routes/secretWord");
 app.use("/secretWord", auth, secretWordRouter);
+app.use("/jobs", auth, jobsRoute);
 
 app.use((req, res) => {
   res.status(404).send(`That page (${req.url}) was not found.`);
