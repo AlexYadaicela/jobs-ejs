@@ -1,9 +1,22 @@
 const express = require("express");
 require("express-async-errors");
+const jobsRoute = require("./routes/jobs");
+const helmet = require("helmet");
+const rateLimit = require("express-rate-limit");
 
 const app = express();
 
 app.set("view engine", "ejs");
+
+app.use(helmet());
+app.use(
+  rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 100,
+    message: "Too many requests from this IP, please try again later",
+  }),
+);
+
 app.use(require("body-parser").urlencoded({ extended: true }));
 
 require("dotenv").config(); // to load the .env file into the process.env object
@@ -45,10 +58,23 @@ app.use(passport.session());
 
 app.use(require("connect-flash")());
 
+const csrf = require("csurf");
+app.use(csrf());
+
+app.use((req, res, next) => {
+  res.locals._csrf = req.csrfToken();
+  next();
+});
+
 app.use(require("./middleware/storeLocals"));
 app.get("/", (req, res) => {
   res.render("index");
 });
+
+// app.get("/jobs", (req, res) => {
+//   res.render("jobs");
+// });
+
 app.use("/sessions", require("./routes/sessionRoutes"));
 
 // secret word handling
@@ -56,6 +82,7 @@ app.use("/sessions", require("./routes/sessionRoutes"));
 const auth = require("./middleware/auth");
 const secretWordRouter = require("./routes/secretWord");
 app.use("/secretWord", auth, secretWordRouter);
+app.use("/jobs", auth, jobsRoute);
 
 app.use((req, res) => {
   res.status(404).send(`That page (${req.url}) was not found.`);
